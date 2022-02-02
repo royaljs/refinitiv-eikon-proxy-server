@@ -80,7 +80,7 @@ class TimeSeriesDataView(APIView):
         
         # Invalid RIC에 대한 응답
         try:
-            result = ek.get_timeseries(instruments, start_date=dateFrom, end_date=dateTo, interval=interval)
+            result = ek.get_timeseries(instruments, fields, start_date=dateFrom, end_date=dateTo, interval=interval)
         except ek.eikonError.EikonError as err:
             return Response(str(err), status=400)
         
