@@ -3,8 +3,8 @@ A project of Refinitiv Eikon Data Proxy server for cooperation with team members
 
 # 서비스 소개
 각종 금융 데이터를 수집하려는 목적으로 Thomson Reuter 사의 Refinitiv Eikon 서비스를 사용한다.  
-이 브랜치의 EikonDataService 서비스는 공식 제공되는 Eikon Data API를 통해 금융 데이터를 요청하는 프록시 서비스를 지원한다.  
-Eikon Data API를 통해 수집한 금융 데이터를 자사 RDB에 저장하고, RDB에 존재하는 데이터를 요청한 경우 Eikon Data API 대신 자사 RDB에서 데이터를 조회하는 기능은 추후 구현 예정.
+EikonDataService 서비스는 공식 제공되는 Eikon Data API를 통해 금융 데이터를 요청하는 프록시 서비스를 지원한다.  
+Eikon Data API를 통해 수집한 금융 데이터를 RDB에 저장하고, RDB에 존재하는 데이터를 요청한 경우 Eikon Data API 대신 RDB에서 데이터를 조회하는 기능은 추후 구현 예정.
 
 # 환경 설정
 Thomson Reuter사의 Refinitiv Eikon Data API는 파이썬 라이브러리로 제공된다.  
