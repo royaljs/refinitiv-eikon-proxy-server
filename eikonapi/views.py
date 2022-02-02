@@ -85,7 +85,13 @@ class TimeSeriesDataView(APIView):
             return Response(str(err), status=400)
         
         # 엑셀 파일 저장
-        result.to_excel(f'{os.path.dirname(__file__)}\\test_dir\\{datetime.today().strftime("%Y%m%d%H%M%S")}_{instruments}.xlsx')
+        directory = f'{os.path.dirname(__file__)}\\data\\timeseries\\'
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+        except OSError as err:
+            print(str(err))
+        result.to_excel(f'{directory}\\{datetime.today().strftime("%Y%m%d%H%M%S")}_{instruments}.xlsx')
 
         #interval이 minute, hour, daily, weekly, monthly, quarterly, yearly인 경우 (tick이 아닌 경우)
         if interval != 'tick' :

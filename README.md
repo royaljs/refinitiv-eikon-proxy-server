@@ -81,7 +81,7 @@ Eikon 정책상 조회간격(interval)이 1일 미만인 경우(minute, tick 등
 | query parameter (Type/Format)               | Description                          |
 | ---------------                             | ------------------------------------------------ |
 | **instruments** (string/list of string) _required_        | 종목코드(RIC 코드/ticker) ex) IBM(IBM), T(AT&T), 005930.KS (삼성전자)     |
-| **fields** (string/list of string) _required_             | 조회할 데이터 항목. TIMESTAMP, VALUE, VOLUME, HIGH, LOW, OPEN, CLOSE, COUNT 만 가능. 단, interval이 tick인 경우 VALUE와 VOLUME만 가능.                         |
+| **fields** (string/list of string) _required_             | 조회할 데이터 항목. VALUE, VOLUME, HIGH, LOW, OPEN, CLOSE, COUNT 만 가능. 단, interval이 tick인 경우 VALUE와 VOLUME만 가능.                         |
 | **dateFrom** (datetime/YYYY-MM-DDThh:mm:ss) _optional_    | 조회의 시작일 ex)  2020-01-20T15:04:05   |
 | **dateTo** (datetime/YYYY-MM-DDThh:mm:ss) _optional_      | 조회의 종료일 ex)  2021-01-20T15:04:05   |
 | **interval** (string) _optional_                          | 조회할 시간 간격. tick, minute, hour, daily, weekly, monthly, quarterly, yearly이 가능. 기본값은 daily      |
@@ -90,7 +90,7 @@ Eikon 정책상 조회간격(interval)이 1일 미만인 경우(minute, tick 등
 #### Response
 요청한 시계열 데이터에 대해 시각(datetime)을 key로 하는 JSON 형태로 응답한다.  
 단, 조회 interval이 tick인 경우 동일 시각에 체결 데이터가 존재하므로 시각을 
-조회된 시계열 데이터는 서버 디렉토리(현재 EikonDataService/eikonapi/test_dir 경로)에 해당 시계열 데이터를 엑셀 파일 (요청시각_종목명.xlsx)로 저장된다.
+조회된 시계열 데이터는 서버 디렉토리(현재 EikonDataService/eikonapi/data/timeseries 경로)에 해당 시계열 데이터를 엑셀 파일 (요청시각_종목명.xlsx)로 저장된다.
 
 ##### 하나의 instruments를 요청한 경우
 ```json
