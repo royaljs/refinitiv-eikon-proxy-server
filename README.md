@@ -21,8 +21,12 @@ Eikon 데이터 프록시 서버는 파이썬 프레임워크인 Django와 Djang
 #### 설정 리스트
 - **eikon app key 설정:** /EikonDataService/eikonapi/view.py의 ek.set_app_key() 인자에 Thomson Reuter Eikon 앱의 key generator에서 발급된 key값을 입력한다. (**단, key generator로 새로 발급하지 않는 이상 해당 코드는 수정하지 않아도 된다.**)
 
+#### 파이썬 패키지 설치
+파이썬 패키지 매니저인 pip를 이용하여 필요한 파이썬 패키지를 설치한다.  
+필요한 패키지는 requirements.txt에 정의되어있다.  
+
 ```sh
-$ pip3 install pandas eikon django djangorestframework
+$ pip3 install -r requirements.txt
 ```
 
 주의사항: python 3.x 버전에서만 지원되는 라이브러리는 pip로 설치시 정상동작하지 않을 수 있으므로 pip3로 설치한다.
