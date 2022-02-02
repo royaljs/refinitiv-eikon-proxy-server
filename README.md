@@ -8,7 +8,7 @@ Eikon Data API를 통해 수집한 금융 데이터를 RDB에 저장하고, RDB�
 
 # 환경 설정
 Thomson Reuter사의 Refinitiv Eikon Data API는 파이썬 라이브러리로 제공된다.  
-이 브랜치의 eikon 데이터 프록시 서버는 파이썬 프레임워크인 Django와 DjangoRestFramework를 토대로 구현되어있으므로 기본적인 파이썬 개발 환경이 필요하다.  
+Eikon 데이터 프록시 서버는 파이썬 프레임워크인 Django와 DjangoRestFramework를 토대로 구현되어있으므로 기본적인 파이썬 개발 환경이 필요하다.  
 또한 Eikon Data API는 Thomson Reuter Eikon 데스크탑 앱을 통해 작동하기 때문에 Thomson Reuter Eikon 데스크탑 앱이 설치/실행되어야한다.   
 해당 앱은 Windows에만 제공되므로 OS도 Windows를 사용한다.
 
@@ -74,19 +74,23 @@ $ python manage.py runserver $IP:$PORT
 
 ### GET /eikon/data/timeseries
 금융 종목의 시계열 데이터를 요청한다.  
-여러 종목 및 항목을 요청할 경우 query parameter에 배열로 입력하면 된다.
+여러 종목 및 항목을 요청할 경우 query parameter에 배열로 입력하면 된다.  
+Eikon 정책상 조회간격(interval)이 1일 미만인 경우(minute, tick 등)에는 조회가능한 기간이 최대 1년으로 제한된다.  
 
 #### Request
 | query parameter (Type/Format)               | Description                          |
 | ---------------                             | ------------------------------------------------ |
 | **instruments** (string/list of string) _required_        | 종목코드(RIC 코드/ticker) ex) IBM(IBM), T(AT&T), 005930.KS (삼성전자)     |
-| **fields** (string/list of string) _required_             | 조회할 데이터 항목. TIMESTAMP, VALUE, VOLUME, HIGH, LOW, OPEN, CLOSE, COUNT 만 가능                         |
+| **fields** (string/list of string) _required_             | 조회할 데이터 항목. TIMESTAMP, VALUE, VOLUME, HIGH, LOW, OPEN, CLOSE, COUNT 만 가능. 단, interval이 tick인 경우 VALUE와 VOLUME만 가능.                         |
 | **dateFrom** (datetime/YYYY-MM-DDThh:mm:ss) _optional_    | 조회의 시작일 ex)  2020-01-20T15:04:05   |
 | **dateTo** (datetime/YYYY-MM-DDThh:mm:ss) _optional_      | 조회의 종료일 ex)  2021-01-20T15:04:05   |
-| **interval** (string) _optional_                          | 조회할 시간 간격. tick, minute, hour, daily, weekly, monthly, quarterly, yearly이 가능. 기본값은 daily     |
+| **interval** (string) _optional_                          | 조회할 시간 간격. tick, minute, hour, daily, weekly, monthly, quarterly, yearly이 가능. 기본값은 daily      |
+
 
 #### Response
-요청한 시계열 데이터에 대해 JSON 형태로 응답하며, 서버 디렉토리(현재 EikonDataService/eikonapi/test_dir 경로)에 해당 시계열 데이터를 엑셀 파일 (요청시각_종목명.xlsx)로 저장한다.
+요청한 시계열 데이터에 대해 시각(datetime)을 key로 하는 JSON 형태로 응답한다.  
+단, 조회 interval이 tick인 경우 동일 시각에 체결 데이터가 존재하므로 시각을 
+조회된 시계열 데이터는 서버 디렉토리(현재 EikonDataService/eikonapi/test_dir 경로)에 해당 시계열 데이터를 엑셀 파일 (요청시각_종목명.xlsx)로 저장된다.
 
 ##### 하나의 instruments를 요청한 경우
 ```json
@@ -138,6 +142,43 @@ $ python manage.py runserver $IP:$PORT
 }
 ```
 
+
+##### interval이 tick인 경우
+```json
+{
+    "2021-01-25T20:52:30.826Z": [ // 시각이 key로 발급되며, value는 tick JSON 데이터의 list이다.
+        {
+            "VALUE": 142.895,
+            "VOLUME": 100.0
+        },
+        {
+            "VALUE": 142.89,
+            "VOLUME": 100.0
+        },
+        {
+            "VALUE": 142.89,
+            "VOLUME": 2.0
+        },
+    ],
+    "2021-01-25T20:52:30.828Z": [
+        {
+            "VALUE": 142.89,
+            "VOLUME": 198.0
+        }
+    ],
+    "2021-01-25T20:52:30.829Z": [
+        {
+            "VALUE": 142.9,
+            "VOLUME": 100.0
+        }
+    ],
+    "2021-01-25T20:52:30.839Z": [
+        {
+            "VALUE": 142.9,
+            "VOLUME": 100.0
+        }
+    ],
+```
 
 
 ### GET /eikon/news/headlines
