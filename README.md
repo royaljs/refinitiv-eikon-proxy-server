@@ -1,12 +1,15 @@
 # refinitiv-eikon-proxy-server
 A project of Refinitiv Eikon Data Proxy server for cooperation with team members
 
-# 서비스 소개
+## 프로젝트 진행 기간
+2021년 2월 18일 ~ 2021년 2월 23일
+
+## 서비스 소개
 각종 금융 데이터를 수집하려는 목적으로 Thomson Reuter 사의 Refinitiv Eikon 서비스를 사용한다.  
 EikonDataService 서비스는 공식 제공되는 Eikon Data API를 통해 금융 데이터를 요청하는 프록시 서비스를 지원한다.  
 Eikon Data API를 통해 수집한 금융 데이터를 RDB에 저장하고, RDB에 존재하는 데이터를 요청한 경우 Eikon Data API 대신 RDB에서 데이터를 조회하는 기능은 추후 구현 예정.
 
-# 환경 설정
+## 환경 설정
 Thomson Reuter사의 Refinitiv Eikon Data API는 파이썬 라이브러리로 제공된다.  
 Eikon 데이터 프록시 서버는 파이썬 프레임워크인 Django와 DjangoRestFramework를 토대로 구현되어있으므로 기본적인 파이썬 개발 환경이 필요하다.  
 또한 Eikon Data API는 Thomson Reuter Eikon 데스크탑 앱을 통해 작동하기 때문에 Thomson Reuter Eikon 데스크탑 앱이 설치/실행되어야한다.   
@@ -31,7 +34,7 @@ $ pip3 install -r requirements.txt
 
 주의사항: python 3.x 버전에서만 지원되는 라이브러리는 pip로 설치시 정상동작하지 않을 수 있으므로 pip3로 설치한다.
 
-# 서버 실행
+## 서버 실행
 
 ```sh
 Thomson Reuter Eikon 데스크탑 앱을 실행하고 로그인한다.
@@ -39,7 +42,7 @@ $ cd EikonDataService
 $ python manage.py runserver $IP:$PORT
 ```
 
-# 서비스 구성 및 API 호출 예시
+## 서비스 구성 및 API 호출 예시
 이 서버는 Eikon Data API에 4가지 핵심 조회 API인 get_data, get_timeseries, get_news_headlines, get_news_story에 대한 프록시 서비스를 제공한다.  
 모든 API는 GET HTTP 요청을 통해 호출할 수 있으며, 요청에 필요한 인자는 query parameter로 입력한다. (ex. /eikon/news/headlines?queryString=KOREA&count=3&dateFrom=2020-01-20T15:04:05&dateTo=2021-01-25T15:04:05)  
 뉴스 스토리 조회 API를 제외한 모든 API는 JSON 형식의 응답을 준다.
@@ -236,5 +239,5 @@ query parameter로 storyId를 입력한다.
 "<div class=\"storyContent\" lang=\"en\"><style type=\"text/css\">.storyContent * {border-color:inherit !important;outline-color:inherit !important;}</style><p>The EU-China deal that gives Beijing too little to lose</p><p>Hello from Brussels. Following the EU’s investment deal with China — of which more below — it’s the US’s turn to provoke a cry of ...(<a href=\"https://www.ft.com/cms/s/cfe4b5a3-1f64-4dfd-9a5b-133233a17ae6.html?FTCamp=engage/CAPI/app/Channel_Refinitiv//B2B\" data-type=\"url\" class=\"tr-link\" translate=\"no\">Full Story</a>)</p><p>© The Financial Times Limited 2021</p></div>"
 `
 
-# 로그
+## 로그
 EikonDataService/logs 디렉토리의 info.log 및 error.log 파일을 통해 Request-Response 및 각종 에러 로그를 확인할 수 있다.
